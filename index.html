@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulador de Crédito Hipotecario</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    label {
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .result {
+      background: white;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Simulador de Crédito Hipotecario</h1>
+
+  <label for="monto">Monto del crédito (COP):</label>
+  <input type="number" id="monto" placeholder="Ej. 200000000">
+
+  <label for="interes">Tasa de interés anual (%):</label>
+  <input type="number" id="interes" step="0.01" placeholder="Ej. 12">
+
+  <label for="plazo">Plazo (años):</label>
+  <input type="number" id="plazo" placeholder="Ej. 15">
+
+  <button onclick="calcularCuota()">Calcular</button>
+
+  <div class="result" id="resultado" style="display: none;">
+    <p><strong>Cuota mensual estimada:</strong> <span id="cuota"></span></p>
+    <p><strong>Total a pagar:</strong> <span id="total"></span></p>
+  </div>
+
+  <script>
+    function calcularCuota() {
+      const monto = parseFloat(document.getElementById('monto').value);
+      const tasaAnual = parseFloat(document.getElementById('interes').value);
+      const plazoAnios = parseInt(document.getElementById('plazo').value);
+
+      if (!monto || !tasaAnual || !plazoAnios) {
+        alert('Por favor, rellena todos los campos correctamente.');
+        return;
+      }
+
+      const r = tasaAnual / 100 / 12; // tasa mensual
+      const n = plazoAnios * 12; // número de meses
+
+      const cuota = (monto * r) / (1 - Math.pow(1 + r, -n));
+      const total = cuota * n;
+
+      document.getElementById('cuota').textContent = cuota.toLocaleString('es-CO', { style: 'currency', currency: 'COP' });
+      document.getElementById('total').textContent = total.toLocaleString('es-CO', { style: 'currency', currency: 'COP' });
+      document.getElementById('resultado').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
